@@ -1,33 +1,25 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class PlayerMove : MonoBehaviour
 {
-    private readonly string Horizontal = "Horizontal";
-    private readonly string Vertical = "Vertical";
+    private const string _walk = "Walk";
 
+    [SerializeField] private float _rotateSpeed;
+    
+    private readonly string Horizontal = "Horizontal";
     private Animator _animator;
 
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _rotateSpeed;
+    private void Start()
+    {
+        _animator = GetComponent<Animator>();
+    }
 
     private void Update()
     {
-        Move();
-        Rotate();
-    }
+        bool isMoving = Input.GetKey(KeyCode.W);
+        _animator.SetBool(_walk, isMoving);
 
-    private void Rotate()
-    {
         float rotation = Input.GetAxis(Horizontal);
-
         transform.Rotate(rotation * _rotateSpeed * Time.deltaTime * Vector3.up);
-    }
-
-    private void Move()
-    {
-        Vector3 direction = new Vector3(Input.GetAxis(Horizontal), 0f, Input.GetAxis(Vertical));
-
-        transform.Translate(_moveSpeed * Time.deltaTime * direction);
     }
 }
