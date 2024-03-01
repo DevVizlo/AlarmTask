@@ -6,7 +6,7 @@ public class PlayerMove : MonoBehaviour
 
     [SerializeField] private float _rotateSpeed;
     
-    private readonly string Horizontal = "Horizontal";
+    private readonly string _horizontal = "Horizontal";
     private Animator _animator;
 
     private void Start()
@@ -19,7 +19,7 @@ public class PlayerMove : MonoBehaviour
         bool isMoving = Input.GetKey(KeyCode.W);
         _animator.SetBool(_walk, isMoving);
 
-        float rotation = Input.GetAxis(Horizontal);
+        float rotation = Input.GetAxis(_horizontal);
         transform.Rotate(rotation * _rotateSpeed * Time.deltaTime * Vector3.up);
     }
 }

@@ -7,11 +7,11 @@ public class Alarm : MonoBehaviour
     private AudioSource _audioSource;
     private Coroutine _corotineVolume;
 
-    private float _volume;
+
     private float _minVolume = 0f;
     private float _maxVolume = 2f;
 
-    private float movementVolume = 0.2f;
+    private float _movementVolume = 0.2f;
 
 
     private void Start()
@@ -22,34 +22,30 @@ public class Alarm : MonoBehaviour
 
     public void PlaySound()
     {
-        _volume = _maxVolume;
-
         _audioSource.Play();
-        ProcessingCoroutine();
+        ProcessingCoroutine(_maxVolume);
     }
 
     public void StopSound()
     {
-        _volume = _minVolume;
-
-        ProcessingCoroutine();
+        ProcessingCoroutine(_minVolume);
     }
 
-    private void ProcessingCoroutine()
+    private void ProcessingCoroutine(float container)
     {
         if (_corotineVolume != null)
         {
             StopCoroutine(_corotineVolume);
         }
 
-        _corotineVolume = StartCoroutine(ChangeVolume());
+        _corotineVolume = StartCoroutine(ChangeVolume(container));
     }
 
-    private IEnumerator ChangeVolume()
+    private IEnumerator ChangeVolume(float _volume)
     {
         while (_audioSource.volume != _volume)
         {
-            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _volume, movementVolume * Time.deltaTime);
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, _volume, _movementVolume * Time.deltaTime);
 
             if (_audioSource.volume == _minVolume)
                 _audioSource.Stop();
