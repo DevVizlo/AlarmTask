@@ -5,8 +5,7 @@ using UnityEngine;
 public class Alarm : MonoBehaviour
 {
     private AudioSource _audioSource;
-    private Coroutine _activateCorotineVolume;
-    private Coroutine _deactivateCorotineVolume;
+    private Coroutine _corotineVolume;
 
     private float _volume;
     private float _minVolume = 1f;
@@ -27,7 +26,7 @@ public class Alarm : MonoBehaviour
 
         _volume = _minVolume;
         _audioSource.Play();
-        _activateCorotineVolume = StartCoroutine(ChangeVolume());
+        _corotineVolume = StartCoroutine(ChangeVolume());
     }
 
     public void StopSound()
@@ -35,18 +34,18 @@ public class Alarm : MonoBehaviour
         StopCoroutineBefore();
 
         _volume = _maxVolume;
-        StopCoroutine(_activateCorotineVolume);
-        _activateCorotineVolume = StartCoroutine(ChangeVolume());
+        StopCoroutine(_corotineVolume);
+        _corotineVolume = StartCoroutine(ChangeVolume());
     }
 
     private void StopCoroutineBefore()
     {
-        if (_deactivateCorotineVolume != null)
+        if (_corotineVolume != null)
         {
-            StopCoroutine(_deactivateCorotineVolume);
+            StopCoroutine(_corotineVolume);
         }
 
-        _deactivateCorotineVolume = StartCoroutine(ChangeVolume());
+        _corotineVolume = StartCoroutine(ChangeVolume());
     }
 
     private IEnumerator ChangeVolume()
